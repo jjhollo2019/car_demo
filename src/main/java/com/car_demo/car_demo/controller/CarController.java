@@ -59,6 +59,16 @@ public class CarController {
     }
 
     @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successful update of car", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Car.class)))),
+        @ApiResponse(responseCode = "400", description = "Bad Request: unsuccessful submission", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
+    })
+    @PutMapping(value = "/car")
+    public ResponseEntity<Car> updateCar(@Valid @RequestBody Car car) {
+        carService.updateCar(car);
+        return new ResponseEntity<Car>(carService.getCarById(car.getId()), HttpStatus.OK);
+    }
+
+    @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Successful creation of car", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Car.class)))),
         @ApiResponse(responseCode = "400", description = "Bad Request: unsuccessful submission", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
     })
