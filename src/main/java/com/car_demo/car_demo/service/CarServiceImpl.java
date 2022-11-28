@@ -50,5 +50,10 @@ public class CarServiceImpl implements CarService {
             .findFirst()
             .orElseThrow(() -> new CarNotFoundException(id));
     }
+
+    @Override
+    public void deleteCar(String id) {
+        carRepository.removeCar(findIndexById(id));  
+    }
     
 }
