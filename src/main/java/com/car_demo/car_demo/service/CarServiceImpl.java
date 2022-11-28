@@ -55,5 +55,11 @@ public class CarServiceImpl implements CarService {
     public void deleteCar(String id) {
         carRepository.removeCar(findIndexById(id));  
     }
+
+    @Override
+    public Car updateCar(Car car) {
+        carRepository.updateCar(findIndexById(car.getId()), car);
+        return getCarById(car.getId());
+    }
     
 }

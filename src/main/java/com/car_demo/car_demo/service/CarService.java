@@ -19,6 +19,12 @@ public interface CarService {
     void saveCar(Car car);
 
     /**
+     * @param car car object to updated in the db
+     * @return updated car object
+     */
+    Car updateCar(Car car);
+
+    /**
      * @param id string identifier for specific car instance
      */
     void deleteCar(String id);
