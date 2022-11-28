@@ -65,7 +65,26 @@ class CarDemoApplicationTests {
 		RequestBuilder request = MockMvcRequestBuilders.get("/car/all");
 
 		mockMvc.perform(request)
-			.andExpect(status().is2xxSuccessful());
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	public void testUpdateCar() throws Exception {
+		RequestBuilder request = MockMvcRequestBuilders.post("/car")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(new Car("1", "dodge", "ram", "2020", 27000)));
+
+		mockMvc.perform(request)
+			.andExpect(status().isCreated());
+
+		RequestBuilder request_update = MockMvcRequestBuilders.put("/car")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(new Car("1", "dodge", "ram", "2022", 20)));
+
+		mockMvc.perform(request_update)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.year").value("2022"))
+			.andExpect(jsonPath("$.mileage").value(20));
 	}
 
 }
