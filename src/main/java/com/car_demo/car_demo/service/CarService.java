@@ -1,5 +1,25 @@
 package com.car_demo.car_demo.service;
 
-public class CarService {
-    
+import java.util.List;
+
+import com.car_demo.car_demo.definitions.Car;
+
+//define some basic features for implementations
+public interface CarService {
+
+    /**
+     * @param id string identifier for specific car instance
+     * @return car object identified by id
+     */
+    Car getCarById(String id);
+
+    /**
+     * @param car car object to be saved into db
+     */
+    void saveCar(Car car);
+
+    /**
+     * @return all cars saved in the db
+     */
+    List<Car> getInventory();
 }
