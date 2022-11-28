@@ -2,6 +2,8 @@ package com.car_demo.car_demo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,7 +63,7 @@ public class CarController {
         @ApiResponse(responseCode = "400", description = "Bad Request: unsuccessful submission", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
     })
     @PostMapping("/car")
-    public ResponseEntity<Car> createCar(@RequestBody Car car) {
+    public ResponseEntity<Car> createCar(@Valid @RequestBody Car car) {
         // save the car using the service class
         carService.saveCar(car);
         // return object and created status code to user
