@@ -35,6 +35,14 @@ public class Car {
         this.mileage = mileage;
     }
 
+    public Car(String make, String model, String year, int mileage) {
+        this.id = UUID.randomUUID().toString();
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.mileage = mileage;
+    }
+
     public Car() {
         this.id = UUID.randomUUID().toString();
     }
