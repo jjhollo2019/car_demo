@@ -5,9 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,9 +65,9 @@ public class CarController {
         @ApiResponse(responseCode = "400", description = "Bad Request: unsuccessful submission", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
     })
     @PutMapping(value = "/car")
-    public ResponseEntity<Car> updateCar(@Valid @RequestBody Car car) {
+    public ResponseEntity<Car> updateCar(@Valid @RequestBody Car car, BindingResult result) {
         carService.updateCar(car);
-        return new ResponseEntity<Car>(carService.getCarById(car.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(carService.getCarById(car.getId()), HttpStatus.OK);
     }
 
     @ApiResponses(value = {
@@ -87,6 +89,6 @@ public class CarController {
     @DeleteMapping("/car/{id}")
     public ResponseEntity<HttpStatus> deleteCar(@PathVariable String id) {
         carService.deleteCar(id);
-        return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+        return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
 }
