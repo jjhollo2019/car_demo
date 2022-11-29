@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -44,16 +45,19 @@ public class Car {
     private Long id;
     
     // every car must have a make
+    @NotBlank(message = "make cannot be blank")
     @NonNull
     @Column(name = "make", nullable = false)
     private String make;
     
     // every car must have a model
+    @NotBlank(message = "model cannot be blank")
     @NonNull
     @Column(name = "model", nullable = false)
     private String model;
 
     // every car must have a production year
+    @NotBlank(message = "production year cannot be blank")
     @NonNull
     @Column(name = "production_year", nullable = false)
     private String production_year;
@@ -69,8 +73,8 @@ public class Car {
     private Set<Mechanic> works_on;
 
     // not every car needs a sales employee to exist
-    @JsonIgnore
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
-    private SalesEmployee sold_by;
+    // @JsonIgnore
+    // @ManyToOne(optional = false)
+    // @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    // private SalesEmployee sold_by;
 }

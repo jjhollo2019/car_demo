@@ -1,5 +1,6 @@
 package com.car_demo.car_demo.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -41,9 +42,9 @@ public class CarController {
     @ApiResponse(responseCode = "200", description = "Successful retrieval of cars", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Car.class))))
     @Operation(summary = "Retrieves cars", description = "Provides a list of all cars in inventory")
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<Car>> getInventory() {
+    public ResponseEntity<List<Car>> getInventory() {
         // retrieve inventory from service class
-        Set<Car> inventory = carService.getInventory();
+        List<Car> inventory = carService.getInventory();
         // send inventory and 200 status code back to user
         return new ResponseEntity<>(inventory, HttpStatus.OK);
     }
@@ -74,8 +75,9 @@ public class CarController {
         @ApiResponse(responseCode = "201", description = "Successful creation of car", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Car.class)))),
         @ApiResponse(responseCode = "400", description = "Bad Request: unsuccessful submission", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
     })
-    @PostMapping
-    public ResponseEntity<Car> createCar(@Valid @RequestBody Car car) {
+    @PostMapping("")
+    public ResponseEntity<Car> createCar(@Valid @RequestBody Car car, BindingResult result) {
+        if(result.hasErrors()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         // save the car using the service class
         carService.saveCar(car);
         // return object and created status code to user

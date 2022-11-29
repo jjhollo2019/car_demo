@@ -73,7 +73,7 @@ class CarDemoApplicationTests {
 	@Test
 	public void testUnsuccessfulSubmission() throws Exception {
 		// create a new car object
-		Car car = new Car("dodge", "ram", "2020", 27000);
+		Car car = new Car("dodge", "  ", "2020", 27000);
 		// build a post request for the new car object
 		RequestBuilder request = MockMvcRequestBuilders.post("/car")
 			.contentType(MediaType.APPLICATION_JSON)
@@ -123,7 +123,7 @@ class CarDemoApplicationTests {
 		// perform request, expect HTTP code 200 (ok) and the values to be changed in the response object
 		mockMvc.perform(request_update)
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.year").value("2022"));
+			.andExpect(jsonPath("$.production_year").value("2022"));
 	}
 
 }

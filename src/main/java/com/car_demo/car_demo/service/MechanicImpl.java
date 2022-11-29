@@ -7,10 +7,12 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
 import com.car_demo.car_demo.data.MechanicRepository;
 import com.car_demo.car_demo.definitions.Mechanic;
 
+@Service
 public class MechanicImpl implements MechanicService {
 
     // define a mechanic repository, spring boot will wire it

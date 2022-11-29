@@ -1,6 +1,7 @@
 // Jeremy Holloway
 package com.car_demo.car_demo.service;
 
+import java.util.List;
 import java.util.Set;
 
 import com.car_demo.car_demo.definitions.Car;
@@ -33,5 +34,5 @@ public interface CarService {
     /**
      * @return all cars saved in the db
      */
-    Set<Car> getInventory();
+    List<Car> getInventory();
 }

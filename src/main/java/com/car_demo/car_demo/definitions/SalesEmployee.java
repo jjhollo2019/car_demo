@@ -53,8 +53,8 @@ public class SalesEmployee {
     private Integer salary;
 
     // not every sales person needs to have sold a car to exist
-    @JsonIgnore
-    @OneToMany(mappedBy = "sold_by", cascade = CascadeType.ALL)
-    private Set<Car> cars_sold;
+    // @JsonIgnore
+    // @OneToMany(mappedBy = "sold_by", cascade = CascadeType.ALL)
+    // private Set<Car> cars_sold;
     
 }

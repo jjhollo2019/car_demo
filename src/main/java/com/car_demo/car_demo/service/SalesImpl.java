@@ -5,11 +5,13 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
 import com.car_demo.car_demo.data.SalesEmployeeRepository;
 import com.car_demo.car_demo.definitions.SalesEmployee;
 
 // implement the service interface defined in SalesService
+@Service
 public class SalesImpl implements SalesService {
 
     // spring boot will wire this to the sales employee repo

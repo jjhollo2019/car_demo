@@ -1,6 +1,7 @@
 //Jeremy Holloway
 package com.car_demo.car_demo.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -38,8 +39,8 @@ public class CarServiceImpl implements CarService {
      * @see com.car_demo.car_demo.service.CarService#getInventory()
      */
     @Override
-    public Set<Car> getInventory() {
-        return (Set<Car>) carRepository.findAll();
+    public List<Car> getInventory() {
+        return (List<Car>) carRepository.findAll();
     }
 
     /* (non-Javadoc)
