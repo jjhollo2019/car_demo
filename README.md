@@ -12,3 +12,5 @@ http://localhost:8080/v3/api-docs
 http://localhost:8080/swagger-ui/index.html
 
 Postman Checks: https://www.getpostman.com/collections/65ef17517f403071e566
+
+Hibernate Link: http://localhost:8080/h2

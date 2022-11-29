@@ -1,6 +1,7 @@
+// Jeremy Holloway
 package com.car_demo.car_demo.service;
 
-import java.util.List;
+import java.util.Set;
 
 import com.car_demo.car_demo.definitions.Car;
 
@@ -11,7 +12,7 @@ public interface CarService {
      * @param id string identifier for specific car instance
      * @return car object identified by id
      */
-    Car getCarById(String id);
+    Car getCarById(Long id);
 
     /**
      * @param car car object to be saved into db
@@ -27,10 +28,10 @@ public interface CarService {
     /**
      * @param id string identifier for specific car instance
      */
-    void deleteCar(String id);
+    void deleteCar(Long id);
 
     /**
      * @return all cars saved in the db
      */
-    List<Car> getInventory();
+    Set<Car> getInventory();
 }

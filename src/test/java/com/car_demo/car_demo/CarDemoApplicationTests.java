@@ -54,10 +54,12 @@ class CarDemoApplicationTests {
 	 */
 	@Test
 	public void testSuccessfulSubmission() throws Exception {
-		// build a post request for a new car object
+		// create a new car object
+		Car car = new Car("dodge", "ram", "2020", 27000);
+		// build a post request for the new car object
 		RequestBuilder request = MockMvcRequestBuilders.post("/car")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsString(new Car("1", "dodge", "ram", "2020", 27000)));
+			.content(objectMapper.writeValueAsString(car));
 
 		// perform request and expect an HTTP code 201 (created)
 		mockMvc.perform(request)
@@ -70,10 +72,12 @@ class CarDemoApplicationTests {
 	 */
 	@Test
 	public void testUnsuccessfulSubmission() throws Exception {
-		// build a post request for a new car object with a bad attribute
+		// create a new car object
+		Car car = new Car("dodge", "ram", "2020", 27000);
+		// build a post request for the new car object
 		RequestBuilder request = MockMvcRequestBuilders.post("/car")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsString(new Car("1", " ", "ram", "2020", 27000)));
+			.content(objectMapper.writeValueAsString(car));
 
 		// perform request and expect HTTP code 400 (bad request)
 		mockMvc.perform(request)
@@ -100,25 +104,26 @@ class CarDemoApplicationTests {
 	 */
 	@Test
 	public void testUpdateCar() throws Exception {
-		// build a post request for a new car object
+		// create a new car object
+		Car car = new Car("dodge", "ram", "2020", 27000);
+		// build a post request for the new car object
 		RequestBuilder request = MockMvcRequestBuilders.post("/car")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsString(new Car("1", "dodge", "ram", "2020", 27000)));
+			.content(objectMapper.writeValueAsString(car));
 
 		// perform request and expect an HTTP code 201 (created)
 		mockMvc.perform(request)
 			.andExpect(status().isCreated());
 
-		// build put request to update car object
+		car.setProduction_year("2022");
 		RequestBuilder request_update = MockMvcRequestBuilders.put("/car")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsString(new Car("1", "dodge", "ram", "2022", 20)));
+			.content(objectMapper.writeValueAsString(car));
 
 		// perform request, expect HTTP code 200 (ok) and the values to be changed in the response object
 		mockMvc.perform(request_update)
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.year").value("2022"))
-			.andExpect(jsonPath("$.mileage").value(20));
+			.andExpect(jsonPath("$.year").value("2022"));
 	}
 
 }

@@ -1,91 +1,76 @@
+// Jeremy Holloway
 package com.car_demo.car_demo.definitions;
 
-import java.util.UUID;
+import java.util.Set;
 
-import javax.validation.constraints.NotBlank;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /* This class will serve as the basic data type for all cars
  * I'm defining all of the data points about a car in this class
+ * 
+ * I'm using lombok to generate the setters, getters, and constructors
+ * it saves me time on writing them
  */
+
+@Getter
+@Setter
+@RequiredArgsConstructor
+@NoArgsConstructor
+// define an entity and table for car
+@Entity
+@Table(name = "car")
 public class Car {
     
     //randomly generated id value
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
     
-    //car make
-    @NotBlank(message = "Car make cannot be blank")
+    // every car must have a make
+    @NonNull
+    @Column(name = "make", nullable = false)
     private String make;
     
-    //car model
-    @NotBlank(message = "Car model cannot be blank")
+    // every car must have a model
+    @NonNull
+    @Column(name = "model", nullable = false)
     private String model;
 
-    @NotBlank(message = "Car year cannot be blank")
-    private String year;
+    // every car must have a production year
+    @NonNull
+    @Column(name = "production_year", nullable = false)
+    private String production_year;
 
-    //car mileage
-    private int mileage;
+    // every car must have a mileage
+    @NonNull
+    @Column(name = "mileage")
+    private Integer mileage;
 
-    // Constructors
-    public Car(String id, String make, String model, String year, int mileage) {
-        this.id = id;
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.mileage = mileage;
-    }
+    // not every car needs a mechanic to exist
+    @JsonIgnore
+    @ManyToMany(mappedBy = "works_on")
+    private Set<Mechanic> works_on;
 
-    public Car(String make, String model, String year, int mileage) {
-        this.id = UUID.randomUUID().toString();
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.mileage = mileage;
-    }
-
-    public Car() {
-        this.id = UUID.randomUUID().toString();
-    }
-
-    // Getters and setters
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getMake() {
-        return this.make;
-    }
-
-    public void setMake(String make) {
-        this.make = make;
-    }
-
-    public String getModel() {
-        return this.model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public int getMileage() {
-        return this.mileage;
-    }
-
-    public void setMileage(int mileage) {
-        this.mileage = mileage;
-    }
-
-    public String getYear() {
-        return this.year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }    
-
+    // not every car needs a sales employee to exist
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private SalesEmployee sold_by;
 }

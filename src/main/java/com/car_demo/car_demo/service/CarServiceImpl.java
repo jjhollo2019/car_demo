@@ -1,14 +1,15 @@
+//Jeremy Holloway
 package com.car_demo.car_demo.service;
 
-import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.car_demo.car_demo.data.CarRepository;
 import com.car_demo.car_demo.definitions.Car;
-import com.car_demo.car_demo.exception.CarNotFoundException;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -16,12 +17,13 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private CarRepository carRepository;
 
+
     /* (non-Javadoc)
-     * @see com.car_demo.car_demo.service.CarService#getCarById(java.lang.String)
+     * @see com.car_demo.car_demo.service.CarService#getCarById(java.lang.Long)
      */
     @Override
-    public Car getCarById(String id) {
-        return carRepository.getCar(findIndexById(id));
+    public Car getCarById(Long id) {
+        return unwrap_car(carRepository.findCarById(id));
     }
 
     /* (non-Javadoc)
@@ -29,37 +31,43 @@ public class CarServiceImpl implements CarService {
      */
     @Override
     public void saveCar(Car car) {
-        carRepository.addCar(car);        
+        carRepository.save(car);       
     }
 
     /* (non-Javadoc)
      * @see com.car_demo.car_demo.service.CarService#getInventory()
      */
     @Override
-    public List<Car> getInventory() {
-        return carRepository.getInventory();
+    public Set<Car> getInventory() {
+        return (Set<Car>) carRepository.findAll();
+    }
+
+    /* (non-Javadoc)
+     * @see com.car_demo.car_demo.service.CarService#deleteCar(java.lang.Long)
+     */
+    @Override
+    public void deleteCar(Long id) {
+        carRepository.delete(getCarById(id));  
+    }
+
+    /* (non-Javadoc)
+     * @see com.car_demo.car_demo.service.CarService#updateCar(com.car_demo.car_demo.definitions.Car)
+     */
+    @Override
+    public Car updateCar(Car car) {
+        carRepository.save(car);
+        return getCarById(car.getId());
     }
 
     /**
-     * @param id string identifier for specific car instance
-     * @return car object with matching id or throw exception
+     * @param car optional object to be returned if present
+     * @return car object without optional wrapper
      */
-    private int findIndexById(String id) {
-        return IntStream.range(0, carRepository.getInventory().size())
-            .filter(index -> carRepository.getInventory().get(index).getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new CarNotFoundException(id));
-    }
-
-    @Override
-    public void deleteCar(String id) {
-        carRepository.removeCar(findIndexById(id));  
-    }
-
-    @Override
-    public Car updateCar(Car car) {
-        carRepository.updateCar(findIndexById(car.getId()), car);
-        return getCarById(car.getId());
+    static Car unwrap_car(Optional<Car> car) {
+        // if the car object is present return it
+        if(car.isPresent()) return car.get();
+        // or else throw a data integrity violation
+        else throw new DataIntegrityViolationException("Car is not present");
     }
     
 }

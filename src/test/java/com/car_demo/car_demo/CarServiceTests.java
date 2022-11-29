@@ -10,9 +10,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,6 @@ public class CarServiceTests {
     @Mock
     private CarRepository carRepository;
 
-    //for now I'm injecting the List implementation
     @InjectMocks
     private CarService carService = new CarServiceImpl();
 
@@ -41,15 +40,15 @@ public class CarServiceTests {
      */
     @Test
     public void getCarsFromRepositoryTest() {
-        List<Car> cars = new ArrayList<Car>();
-        cars.add(new Car("1", "dodge", "ram", "2020", 27000));
-        cars.add(new Car("2", "dodge", "dart", "2013", 152000));
-        when(carRepository.getInventory()).thenReturn(cars);
+        Set<Car> cars = Set.of(
+            new Car("dodge", "ram", "2020", 27000),
+            new Car("dodge", "dart", "2013", 256000));
+        when(carRepository.findAll()).thenReturn(cars);
 
-        List<Car> result = carService.getInventory();
+        Car[] result = (Car[]) carService.getInventory().toArray();
 
-        assertEquals("dodge", result.get(0).getMake());
-        assertEquals("dart", result.get(1).getModel());
+        assertEquals("dodge", result[0].getMake());
+        assertEquals("dart", result[1].getModel());
     }
 
     /**
@@ -58,16 +57,14 @@ public class CarServiceTests {
     @Test
     public void returnCarByIdTest() {
         // create an initial car object
-        Car mock_car = new Car("1", "dodge", "ram", "2020", 27000);
-        // when the inventory is called return the mock car
-        when(carRepository.getInventory()).thenReturn(Arrays.asList(mock_car));
+        Optional<Car> mock_car = Optional.of(new Car("dodge", "ram", "2020", 27000));
         // when the index of that itme is called return the mock car object
-        when(carRepository.getCar(0)).thenReturn(mock_car);
+        when(carRepository.findCarById(mock_car.get().getId())).thenReturn(mock_car);
 
         // get the mock car by it's id
-        Car result = carService.getCarById("1");
+        Car result = carService.getCarById(mock_car.get().getId());
         //assert the id from the mock matches
-        assertEquals(mock_car.getId(), result.getId());
+        assertEquals(mock_car.get().getId(), result.getId());
     }
 
     /**
@@ -76,11 +73,11 @@ public class CarServiceTests {
     @Test
     public void addCarTest() {
         // create a new car object
-        Car new_car = new Car("2", "dodge", "dart", "2013", 156000);
+        Car new_car = new Car("dodge", "dart", "2013", 156000);
         // use the service layer to add a new car to the inventory
         carService.saveCar(new_car);
         // verify the repository layer was only called once
-        verify(carRepository, times(1)).addCar(new_car);
+        verify(carRepository, times(1)).save(new_car);
     }
 
     /**
@@ -89,22 +86,22 @@ public class CarServiceTests {
     @Test
     public void updateCarTest() {
         // create an initial car object
-        Car mock_car = new Car("1", "dodge", "ram", "2020", 27000);
+        Optional<Car> mock_car = Optional.of(new Car("dodge", "ram", "2020", 27000));
         // when the inventory is called return the mock car
-        when(carRepository.getInventory()).thenReturn(Arrays.asList(mock_car));
+        when(carRepository.findAll()).thenReturn(Arrays.asList(mock_car.get()));
         // when the index of that itme is called return the mock car object
-        when(carRepository.getCar(0)).thenReturn(mock_car);
+        when(carRepository.findCarById(mock_car.get().getId())).thenReturn(mock_car);
 
         // use the service to get the car as an object
-        Car car = carService.getCarById("1");
+        Car car = carService.getCarById(mock_car.get().getId());
         // set new year and mileage
-        car.setYear("2022");
+        car.setProduction_year("2022");
         car.setMileage(20);
         // call the update function from the service layer 
         Car updated_car = carService.updateCar(car);
         
         //check the values we set in the returned object from the service layer
-        assertEquals("2022", updated_car.getYear());
+        assertEquals("2022", updated_car.getProduction_year());
         assertEquals(20, updated_car.getMileage());
     }
     
