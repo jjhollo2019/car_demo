@@ -73,8 +73,8 @@ public class Car {
     private Set<Mechanic> works_on;
 
     // not every car needs a sales employee to exist
-    // @JsonIgnore
-    // @ManyToOne(optional = false)
-    // @JoinColumn(name = "employee_id", referencedColumnName = "id")
-    // private SalesEmployee sold_by;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private SalesEmployee sold_by;
 }

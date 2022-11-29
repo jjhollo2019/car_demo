@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -40,15 +41,16 @@ public class CarServiceTests {
      */
     @Test
     public void getCarsFromRepositoryTest() {
-        Set<Car> cars = Set.of(
+        List<Car> cars = Arrays.asList(
             new Car("dodge", "ram", "2020", 27000),
-            new Car("dodge", "dart", "2013", 256000));
+            new Car("dodge", "dart", "2013", 256000)
+        );
         when(carRepository.findAll()).thenReturn(cars);
 
-        Car[] result = (Car[]) carService.getInventory().toArray();
+        List<Car> result = carService.getInventory();
 
-        assertEquals("dodge", result[0].getMake());
-        assertEquals("dart", result[1].getModel());
+        assertEquals("dodge", result.get(0).getMake());
+        assertEquals("dart", result.get(1).getModel());
     }
 
     /**
