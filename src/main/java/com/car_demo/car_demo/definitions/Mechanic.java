@@ -53,7 +53,7 @@ public class Mechanic {
     private String name;
 
     // every employee must have a salary
-    @Min(value = 0, message = "salary must be greater than zero")
+    @Min(value = 1, message = "salary must be greater than zero")
     @NonNull
     @Column(name = "salary", nullable = false)
     private Integer salary;

@@ -4,6 +4,7 @@ package com.car_demo.car_demo.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import com.car_demo.car_demo.definitions.SalesEmployee;
 public class SalesImpl implements SalesService {
 
     // spring boot will wire this to the sales employee repo
+    @Autowired
     SalesEmployeeRepository salesEmployeeRepository;
 
     /* (non-Javadoc)

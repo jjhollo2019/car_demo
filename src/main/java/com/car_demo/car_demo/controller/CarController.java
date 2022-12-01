@@ -84,8 +84,8 @@ public class CarController {
     }
 
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successful deletion of car", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Car.class)))),
-        @ApiResponse(responseCode = "400", description = "Bad Request: unsuccessful submission", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
+        @ApiResponse(responseCode = "204", description = "Successful deletion of car", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Car.class)))),
+        @ApiResponse(responseCode = "404", description = "No car found with that id", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteCar(@PathVariable Long id) {

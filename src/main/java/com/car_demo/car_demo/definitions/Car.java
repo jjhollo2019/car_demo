@@ -64,7 +64,7 @@ public class Car {
     private String production_year;
 
     // every car must have a mileage
-    @Min(value = 0, message = "mileage must be greater than zero")
+    @Min(value = 1, message = "mileage must be greater than zero")
     @NonNull
     @Column(name = "mileage")
     private Integer mileage;

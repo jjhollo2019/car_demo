@@ -16,8 +16,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.car_demo.car_demo.controller.CarController;
 import com.car_demo.car_demo.controller.MechanicController;
+import com.car_demo.car_demo.controller.SalesEmployeeController;
 import com.car_demo.car_demo.definitions.Car;
 import com.car_demo.car_demo.definitions.Mechanic;
+import com.car_demo.car_demo.definitions.SalesEmployee;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,12 +29,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class CarDemoApplicationTests {
 
-	// create a private instance of the controller
+	// create a private instance of the car controller
 	@Autowired
 	private CarController carController;
 
+	// create a private instance of the mechanic controller
 	@Autowired
 	private MechanicController mechanicController;
+
+	// create a private instance of the sales employee controller
+	@Autowired
+	private SalesEmployeeController salesEmployeeController;
 
 	// the object mapper is used to turning objects into JSON
 	@Autowired
@@ -51,6 +58,7 @@ class CarDemoApplicationTests {
 		// assert controllers and mock are not null
 		assertNotNull(carController);
 		assertNotNull(mechanicController);
+		assertNotNull(salesEmployeeController);
 		assertNotNull(mockMvc);
 	}
 
@@ -181,9 +189,13 @@ class CarDemoApplicationTests {
 			.andExpect(status().isBadRequest());
 	}
 
+	/**
+	 * test of get mechanics function at controller level
+	 * @throws Exception
+	 */
 	@Test
 	public void testGetMechanics() throws Exception {
-		// build get request to get inventory
+		// build get request to get mechanics
 		RequestBuilder request = MockMvcRequestBuilders.get("/mechanic/all");
 
 		// perform request and expect HTTP code 200 (ok)
@@ -193,7 +205,7 @@ class CarDemoApplicationTests {
 
 	/**
 	 * test of update function at the controller level
-	 * @throws Exception
+	 * @throws Exception if mechanic object is not well formed
 	 */
 	@Test
 	public void testUpdateMechanic() throws Exception {
@@ -212,6 +224,90 @@ class CarDemoApplicationTests {
 		RequestBuilder request_update = MockMvcRequestBuilders.put("/mechanic")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(objectMapper.writeValueAsString(mMechanic));
+
+		// perform request, expect HTTP code 202 (accepted) and the values to be changed in the response object
+		mockMvc.perform(request_update)
+			.andExpect(status().isAccepted())
+			.andExpect(jsonPath("$.salary").value(65000));
+	}
+
+	/*
+	 *************************************************************************************************
+	 * CRUD tests for sales employee controller
+	 ************************************************************************************************* 
+	 */
+
+	/**
+	 * test of add function at the controller level
+	 * @throws Exception if employee object is not well formed
+	 */
+	@Test
+	public void testSuccessfulSalesEmployeeSubmission() throws Exception {
+		// create a mock sales employee object
+		SalesEmployee mSalesEmployee = new SalesEmployee("John Smith", 55000);
+		// create a mock request to the mechanic controller
+		RequestBuilder request = MockMvcRequestBuilders.post("/sales")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(mSalesEmployee));
+
+		// perform request and expect an HTTP code 201 (created)
+		mockMvc.perform(request)
+			.andExpect(status().isCreated());
+	}
+
+	/**
+	 * test of add function validation at the controller level
+	 * @throws Exception if employee object is not well formed
+	 */
+	@Test
+	public void testUnsuccessfulsalesEmployeeSubmission() throws Exception {
+		// create a mock sales employee object
+		SalesEmployee mSalesEmployee = new SalesEmployee("   ", 0);
+		// create a mock request to the mechanic controller
+		RequestBuilder request = MockMvcRequestBuilders.post("/sales")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(mSalesEmployee));
+
+		// perform request and expect an HTTP code 400 (bad request)
+		mockMvc.perform(request)
+			.andExpect(status().isBadRequest());
+	}
+
+	/**
+	 * test of find all function at the controller level
+	 * @throws Exception if request is malformed
+	 */
+	@Test
+	public void testGetSalesEmployees() throws Exception {
+		// build get request to get sales employees
+		RequestBuilder request = MockMvcRequestBuilders.get("/sales/all");
+
+		// perform request and expect HTTP code 200 (ok)
+		mockMvc.perform(request)
+			.andExpect(status().isOk());
+	}
+
+	/**
+	 * test of update function at the controller level
+	 * @throws Exception if employee object is not well formed
+	 */
+	@Test
+	public void testUpdateSalesEmployee() throws Exception {
+		// create a mock sales employee to be saved in the db
+		SalesEmployee mSalesEmployee = new SalesEmployee("Donald Blythe", 45000);
+		// build a post request for the new sales employee object
+		RequestBuilder request = MockMvcRequestBuilders.post("/sales")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(mSalesEmployee));
+
+		// perform request and expect an HTTP code 201 (created)
+		mockMvc.perform(request)
+			.andExpect(status().isCreated());
+
+		mSalesEmployee.setSalary(65000);
+		RequestBuilder request_update = MockMvcRequestBuilders.put("/sales")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(mSalesEmployee));
 
 		// perform request, expect HTTP code 202 (accepted) and the values to be changed in the response object
 		mockMvc.perform(request_update)
