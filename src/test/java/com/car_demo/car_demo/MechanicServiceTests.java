@@ -79,6 +79,9 @@ public class MechanicServiceTests {
         verify(mechanicRepository, times(1)).save(mMechanic);
     }
 
+    /**
+     * test for the update function of the service layer
+     */
     @Test
     public void updateMechanicTest() {
         // create a mock mechanic object

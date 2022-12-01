@@ -1,7 +1,7 @@
 // Jeremy Holloway
 package com.car_demo.car_demo.service;
 
-import java.util.Set;
+import java.util.List;
 
 import com.car_demo.car_demo.definitions.SalesEmployee;
 
@@ -38,5 +38,5 @@ public interface SalesService {
      * define a get all function for sales employees
      * @return a list of sales employees
      */
-    Set<SalesEmployee> getSalesEmployees();
+    List<SalesEmployee> getSalesEmployees();
 }

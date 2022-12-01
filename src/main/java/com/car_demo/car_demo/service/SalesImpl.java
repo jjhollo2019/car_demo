@@ -1,8 +1,8 @@
 // Jeremy Holloway
 package com.car_demo.car_demo.service;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -54,8 +54,8 @@ public class SalesImpl implements SalesService {
      * @see com.car_demo.car_demo.service.SalesService#getSalesEmployees()
      */
     @Override
-    public Set<SalesEmployee> getSalesEmployees() {
-        return (Set<SalesEmployee>) salesEmployeeRepository.findAll();
+    public List<SalesEmployee> getSalesEmployees() {
+        return (List<SalesEmployee>) salesEmployeeRepository.findAll();
     }
 
     /**
