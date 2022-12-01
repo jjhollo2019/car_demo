@@ -67,7 +67,7 @@ public class CarController {
     @PutMapping
     public ResponseEntity<Car> updateCar(@Valid @RequestBody Car car, BindingResult result) {
         carService.updateCar(car);
-        return new ResponseEntity<>(carService.getCarById(car.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(carService.getCarById(car.getId()), HttpStatus.ACCEPTED);
     }
 
     @ApiResponses(value = {
