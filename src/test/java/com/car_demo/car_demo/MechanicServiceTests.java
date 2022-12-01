@@ -1,6 +1,8 @@
 package com.car_demo.car_demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -62,6 +64,39 @@ public class MechanicServiceTests {
         Mechanic result = mechanicService.getMechanicById(mMechanic.get().getId());
         // assert the id values match between the result and the mock mechanic
         assertEquals(mMechanic.get().getId(), result.getId());
+    }
+
+    /**
+     * test for the add function of the service layer
+     */
+    @Test
+    public void addMechanicTest() {
+        // create a mock mechanic object
+        Mechanic mMechanic = new Mechanic("John Smith", 45000);
+        // call save function from service class
+        mechanicService.addEmployee(mMechanic);
+        // verify the repository layer function is only called once
+        verify(mechanicRepository, times(1)).save(mMechanic);
+    }
+
+    @Test
+    public void updateMechanicTest() {
+        // create a mock mechanic object
+        Mechanic mMechanic = new Mechanic("John Smith", 45000);
+        // when the repository layer find all function is called return the mock object
+        when(mechanicRepository.findAll()).thenReturn(Arrays.asList(mMechanic));
+        // when the find by id function is called at the repository layer return the mock mechanic
+        when(mechanicRepository.findById(mMechanic.getId())).thenReturn(Optional.of(mMechanic));
+
+        // call find function from the service layer to get mechanic object
+        Mechanic mechanic = mechanicService.getMechanicById(mMechanic.getId());
+        // set new salary
+        mechanic.setSalary(65000);
+        // use the update function to save the changes and retrieve the updated object
+        Mechanic updatedMechanic = mechanicService.updateMechanic(mechanic);
+        
+        // assert the salary change we're expecting
+        assertEquals(65000, updatedMechanic.getSalary());
     }
     
 }

@@ -90,7 +90,7 @@ public class CarServiceTests {
         Optional<Car> mock_car = Optional.of(new Car("dodge", "ram", "2020", 27000));
         // when the inventory is called return the mock car
         when(carRepository.findAll()).thenReturn(Arrays.asList(mock_car.get()));
-        // when the index of that itme is called return the mock car object
+        // when the index of that item is called return the mock car object
         when(carRepository.findCarById(mock_car.get().getId())).thenReturn(mock_car);
 
         // use the service to get the car as an object
