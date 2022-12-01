@@ -1,7 +1,7 @@
 // Jeremy Holloway
 package com.car_demo.car_demo.service;
 
-import java.util.Set;
+import java.util.List;
 
 import com.car_demo.car_demo.definitions.Mechanic;
 
@@ -38,5 +38,5 @@ public interface MechanicService {
      * get all mechanics in the db
      * @return all mechanics in the db
      */
-    Set<Mechanic> getMechanics();
+    List<Mechanic> getMechanics();
 }

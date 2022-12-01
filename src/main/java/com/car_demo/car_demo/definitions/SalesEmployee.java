@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -48,6 +49,7 @@ public class SalesEmployee {
     private String name;
 
     // every employee must have a salary
+    @Min(value = 0, message = "salary must be greater than zero")
     @NonNull
     @Column(name = "salary")
     private Integer salary;

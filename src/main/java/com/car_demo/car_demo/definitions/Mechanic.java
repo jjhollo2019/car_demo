@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -45,11 +47,13 @@ public class Mechanic {
     private Long id;
 
     // every mechanic must have a name
+    @NotBlank(message = "name cannot be blank")
     @NonNull
     @Column(name = "name", nullable = false)
     private String name;
 
     // every employee must have a salary
+    @Min(value = 0, message = "salary must be greater than zero")
     @NonNull
     @Column(name = "salary", nullable = false)
     private Integer salary;

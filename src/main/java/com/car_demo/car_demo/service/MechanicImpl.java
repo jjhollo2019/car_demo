@@ -1,11 +1,12 @@
 // Jeremy Holloway
 package com.car_demo.car_demo.service;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import com.car_demo.car_demo.definitions.Mechanic;
 public class MechanicImpl implements MechanicService {
 
     // define a mechanic repository, spring boot will wire it
+    @Autowired
     MechanicRepository mechanicRepository;
 
     /* (non-Javadoc)
@@ -55,8 +57,8 @@ public class MechanicImpl implements MechanicService {
      * @see com.car_demo.car_demo.service.MechanicService#getMechanics()
      */
     @Override
-    public Set<Mechanic> getMechanics() {
-        return (Set<Mechanic>) mechanicRepository.findAll();
+    public List<Mechanic> getMechanics() {
+        return (List<Mechanic>) mechanicRepository.findAll();
     }
     
     /**

@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ public class Car {
     private String production_year;
 
     // every car must have a mileage
+    @Min(value = 0, message = "mileage must be greater than zero")
     @NonNull
     @Column(name = "mileage")
     private Integer mileage;
