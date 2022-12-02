@@ -86,8 +86,6 @@ public class MechanicServiceTests {
     public void updateMechanicTest() {
         // create a mock mechanic object
         Mechanic mMechanic = new Mechanic("John Smith", 45000);
-        // when the repository layer find all function is called return the mock object
-        when(mechanicRepository.findAll()).thenReturn(Arrays.asList(mMechanic));
         // when the find by id function is called at the repository layer return the mock mechanic
         when(mechanicRepository.findById(mMechanic.getId())).thenReturn(Optional.of(mMechanic));
 

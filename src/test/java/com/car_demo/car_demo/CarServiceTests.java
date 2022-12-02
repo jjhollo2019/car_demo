@@ -88,8 +88,6 @@ public class CarServiceTests {
     public void updateCarTest() {
         // create an initial car object
         Optional<Car> mock_car = Optional.of(new Car("dodge", "ram", "2020", 27000));
-        // when the inventory is called return the mock car
-        when(carRepository.findAll()).thenReturn(Arrays.asList(mock_car.get()));
         // when the index of that item is called return the mock car object
         when(carRepository.findCarById(mock_car.get().getId())).thenReturn(mock_car);
 
