@@ -87,12 +87,12 @@ public class CarServiceTests {
     @Test
     public void updateCarTest() {
         // create an initial car object
-        Optional<Car> mock_car = Optional.of(new Car("dodge", "ram", "2020", 27000));
+        Car mock_car = new Car("dodge", "ram", "2020", 27000);
         // when the index of that item is called return the mock car object
-        when(carRepository.findCarById(mock_car.get().getId())).thenReturn(mock_car);
+        when(carRepository.findCarById(mock_car.getId())).thenReturn(Optional.of(mock_car));
 
         // use the service to get the car as an object
-        Car car = carService.getCarById(mock_car.get().getId());
+        Car car = carService.getCarById(mock_car.getId());
         // set new year and mileage
         car.setProduction_year("2022");
         car.setMileage(20);
@@ -100,8 +100,8 @@ public class CarServiceTests {
         Car updated_car = carService.updateCar(car);
         
         //check the values we set in the returned object from the service layer
-        assertEquals("2022", updated_car.getProduction_year());
-        assertEquals(20, updated_car.getMileage());
+        assertEquals(car.getProduction_year(), updated_car.getProduction_year());
+        assertEquals(car.getMileage(), updated_car.getMileage());
     }
     
 }
