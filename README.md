@@ -22,3 +22,5 @@ I have test cases for the following service classes
 
 I have test cases for the following controller classes
     1. Car
+    2. Mechanic
+    3. SalesEmployee
