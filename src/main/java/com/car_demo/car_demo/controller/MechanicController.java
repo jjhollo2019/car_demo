@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +36,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/mechanic")
 public class MechanicController {
 
-    // auto wire my service class 
-    @Autowired
+    // create a private instance of the service class
     MechanicService mechanicService;
 
     /**
