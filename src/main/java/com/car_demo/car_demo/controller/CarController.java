@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -75,8 +76,7 @@ public class CarController {
         @ApiResponse(responseCode = "400", description = "Bad Request: unsuccessful submission", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
     })
     @PostMapping("")
-    public ResponseEntity<Car> createCar(@Valid @RequestBody Car car, BindingResult result) {
-        if(result.hasErrors()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Car> createCar(@Valid @RequestBody Car car) {
         // save the car using the service class
         carService.saveCar(car);
         // return object and created status code to user

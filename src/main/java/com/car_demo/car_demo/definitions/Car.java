@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+import com.car_demo.car_demo.validation.CarMake;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
@@ -46,6 +47,7 @@ public class Car {
     private Long id;
     
     // every car must have a make
+    @CarMake(message = "make must be a valid manufacturer")
     @NotBlank(message = "make cannot be blank")
     @NonNull
     @Column(name = "make", nullable = false)

@@ -6,8 +6,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -88,7 +90,8 @@ public class MechanicController {
         @ApiResponse(responseCode = "400", description = "Unsuccessful update of mechanic", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Mechanic.class))))
     })
     @PutMapping
-    public ResponseEntity<Mechanic> updateMechanic(@Valid @RequestBody Mechanic mechanic) {
+    public ResponseEntity<Mechanic> updateMechanic(@Valid @RequestBody Mechanic mechanic, BindingResult result) {
+        if(result.hasErrors()) throw new DataIntegrityViolationException(result.toString());
         // call save function from service class
         mechanicService.updateMechanic(mechanic);
         // call retrieve function using the id from the mechanic object and http code 202 (accepted)
