@@ -34,4 +34,5 @@ public interface CarService {
      * @return all cars saved in the db
      */
     List<Car> getInventory();
+    
 }

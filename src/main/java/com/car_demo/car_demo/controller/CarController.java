@@ -86,20 +86,20 @@ public class CarController {
 
     /**
      * @param car object to be inserted into db
-     * @return newly created car object from the db with id from submitted instance with http code 201 (created)
+     * @return http code 201 (created)
      */
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Successful creation of car", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Car.class)))),
         @ApiResponse(responseCode = "400", description = "Bad Request: unsuccessful submission", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
     })
     @PostMapping
-    public ResponseEntity<Car> createCar(@Valid @RequestBody Car car) {
+    public ResponseEntity<HttpStatus> createCar(@Valid @RequestBody Car car) {
         // save the car using the service class
         carService.saveCar(car);
-        // return object from the db and http code 201 (created)
-        return new ResponseEntity<Car>(carService.getCarById(car.getId()), HttpStatus.CREATED);
+        // return http code 201 (created)
+        return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
     }
-
+    
     /**
      * @param id Long number unique to an entry for a Car
      * @return http code 204 (no content)

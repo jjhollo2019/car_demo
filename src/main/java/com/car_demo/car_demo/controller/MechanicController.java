@@ -80,6 +80,21 @@ public class MechanicController {
     }
 
     /**
+     * @param mechanicId Long number correspondes to a unique mechanic entry
+     * @param carId Long number corresponds to a unique car entry
+     * @return http status code 202 (accepted)
+     */
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "202", description = "Successful creation of mechanic and car relationship", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Mechanic.class)))),
+        @ApiResponse(responseCode = "400", description = "Unsuccessful creation of mechanic and car relationship", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Mechanic.class))))
+    })
+    @PostMapping("/{mechanicId}/car/{carId}")
+    public ResponseEntity<HttpStatus> addWorksOn(@PathVariable Long mechanicId, @PathVariable Long carId) {
+        mechanicService.addCar(mechanicId, carId);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    /**
      * @param mechanic object to be updated in the db
      * @return the mechanic object stored in the db and http code 202 (accepted)
      */

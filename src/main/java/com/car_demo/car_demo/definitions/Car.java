@@ -72,7 +72,6 @@ public class Car {
     private Integer mileage;
 
     // not every car needs a mechanic to exist
-    @JsonIgnore
     @ManyToMany(mappedBy = "works_on")
     private Set<Mechanic> works_on;
 

@@ -39,4 +39,11 @@ public interface MechanicService {
      * @return all mechanics in the db
      */
     List<Mechanic> getMechanics();
+
+    /**
+     * creates works on relationship between a mechanic and a car
+     * @param mechanicId Long number correspondes to a unique mechanic entry
+     * @param carId Long number corresponds to a unique car entry
+     */
+    void addCar(Long mechanicId, Long carId);
 }

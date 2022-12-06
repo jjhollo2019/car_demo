@@ -17,7 +17,6 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private CarRepository carRepository;
 
-
     /* (non-Javadoc)
      * @see com.car_demo.car_demo.service.CarService#getCarById(java.lang.Long)
      */
