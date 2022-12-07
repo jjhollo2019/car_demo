@@ -99,6 +99,23 @@ public class CarController {
         // return http code 201 (created)
         return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
     }
+
+    /**
+     * @param carId Long number unique to an entry for a Car
+     * @param salesId Long number unique to an entry for a SalesEmployee
+     * @return http code 202 (accepted)
+     */
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "202", description = "Successful addition of sales employee", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Car.class)))),
+        @ApiResponse(responseCode = "400", description = "Bad Request: unsuccessful addition of sales employee", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
+    })
+    @PostMapping("/{carId}/sales/{salesId}")
+    public ResponseEntity<HttpStatus> addSales(@PathVariable Long carId, @PathVariable Long salesId) {
+        // call service layer function
+        carService.addSalesEmployee(carId, salesId);
+        // return http code 202 (accepted)
+        return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
+    }
     
     /**
      * @param id Long number unique to an entry for a Car

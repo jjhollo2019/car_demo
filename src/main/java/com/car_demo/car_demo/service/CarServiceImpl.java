@@ -9,13 +9,29 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.car_demo.car_demo.data.CarRepository;
+import com.car_demo.car_demo.data.SalesEmployeeRepository;
 import com.car_demo.car_demo.definitions.Car;
+import com.car_demo.car_demo.definitions.SalesEmployee;
 
 @Service
 public class CarServiceImpl implements CarService {
 
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private SalesEmployeeRepository salesEmployeeRepository;
+
+    /**
+     * @param car optional object to be returned if present
+     * @return car object without optional wrapper
+     */
+    static Car unwrap_car(Optional<Car> car) {
+        // if the car object is present return it
+        if(car.isPresent()) return car.get();
+        // or else throw a data integrity violation
+        else throw new DataIntegrityViolationException("Car is not present");
+    }
 
     /* (non-Javadoc)
      * @see com.car_demo.car_demo.service.CarService#getCarById(java.lang.Long)
@@ -58,15 +74,29 @@ public class CarServiceImpl implements CarService {
         return getCarById(car.getId());
     }
 
-    /**
-     * @param car optional object to be returned if present
-     * @return car object without optional wrapper
+    /* (non-Javadoc)
+     * @see com.car_demo.car_demo.service.CarService#addSalesEmployee(java.lang.Long, java.lang.Long)
      */
-    static Car unwrap_car(Optional<Car> car) {
-        // if the car object is present return it
-        if(car.isPresent()) return car.get();
-        // or else throw a data integrity violation
-        else throw new DataIntegrityViolationException("Car is not present");
+    @Override
+    public void addSalesEmployee(Long carId, Long salesId) {
+        // get matching car object
+        Car car = getCarById(carId);
+        // declare a sales employee object 
+        SalesEmployee salesEmployee;
+        // retrieve matching sales object in optional wrapper
+        Optional<SalesEmployee> optionalEmployee = salesEmployeeRepository.findSalesEmployeeById(salesId);
+        // check if object is present
+        if(optionalEmployee.isPresent()){
+            // initialize sales employee object to retireved object
+            salesEmployee = optionalEmployee.get();
+        }
+        // throw data integrity violation if sales employee not found
+        else throw new DataIntegrityViolationException("No sales employee with matching id");
+
+        // set the sales employee as the sold by relationship with car object
+        car.setSold_by(salesEmployee);
+        // save the updated object in the db
+        carRepository.save(car);
     }
     
 }

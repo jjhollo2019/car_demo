@@ -35,4 +35,9 @@ public interface CarService {
      */
     List<Car> getInventory();
     
+    /**
+     * @param carId
+     * @param salesId
+     */
+    void addSalesEmployee(Long carId, Long salesId);
 }

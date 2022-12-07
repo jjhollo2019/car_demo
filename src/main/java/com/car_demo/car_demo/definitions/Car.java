@@ -16,7 +16,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import com.car_demo.car_demo.validation.CarMake;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -76,7 +75,6 @@ public class Car {
     private Set<Mechanic> works_on;
 
     // not every car needs a sales employee to exist
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private SalesEmployee sold_by;
